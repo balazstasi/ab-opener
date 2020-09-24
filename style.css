@@ -1,0 +1,22 @@
+body {
+  min-width: 250px;
+  overflow-x: hidden;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+}
+.url {
+  font-weight: bold;
+  width: 250px;
+}
+.limits {
+  font-weight: bold;
+  width: 49%;
+}
+.start,
+.stop {
+  width: 250px;
+}
+.timeout {
+  font-weight: bold;
+  width: 250px;
+}
