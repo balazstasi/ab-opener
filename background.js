@@ -78,8 +78,6 @@ var completed = false;
 
 function changePage(newUrl) {
   chrome.tabs.query({ currentWindow: true, active: true }, function (tab) {
-    console.log(tab);
-    console.log(newUrl);
     chrome.tabs.update(tab.id, {
       url: newUrl,
     });
@@ -87,6 +85,16 @@ function changePage(newUrl) {
 }
 
 function update_page(data) {
+  localStorage.setItem(
+    "opener",
+    JSON.stringify({
+      current: alphanum[start],
+      url: data.url,
+      start: data.start,
+      end: data.end,
+      timeout: data.timeout,
+    })
+  );
   let newUrl = data.url + alphanum[start];
   if (start === end) {
     completed = true;
@@ -111,18 +119,14 @@ function update_page(data) {
 
 chrome.runtime.onConnect.addListener(function (port) {
   port.onMessage.addListener(function (msg) {
-    console.log(msg);
     if (msg !== "stop") {
       completed = false;
       start = alphanum.findIndex((e) => e === msg.start);
       end = alphanum.findIndex((e) => e === msg.end);
-      console.log(start, end);
-      console.log(completed);
-      console.log(msg);
       (function a() {
         if (!completed && msg !== "stop") {
-          console.log(completed);
           update_page(msg);
+          port.postMessage("refresh");
           repeater = setTimeout(a, msg.timeout);
         } else {
           clearInterval(repeater);

@@ -1,7 +1,15 @@
+var opener;
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("start").addEventListener("click", start);
   document.getElementById("stop").addEventListener("click", stop);
+  document
+    .getElementById("localstorage")
+    .addEventListener("click", logLocalStorage);
 });
+
+function logLocalStorage() {
+  console.log(localStorage.getItem("opener"));
+}
 
 var port = chrome.runtime.connect({
   name: "opener",
@@ -54,9 +62,35 @@ function stop(event) {
   });
 }
 
-window.onblur = function () {
-  port.postMessage("stop");
-  port.onMessage.addListener(function (msg) {
-    console.log("message received: " + msg);
-  });
+window.onload = function () {
+  if (localStorage.getItem("opener") !== undefined) {
+    let opener = JSON.parse(localStorage.getItem("opener"));
+    console.log(opener);
+    document.getElementById("url").value = opener.url;
+    document.getElementById("timeout").value = opener.timeout / 1000;
+    document.getElementById("st").value = opener.start;
+    document.getElementById("end").value = opener.end;
+    document.getElementById("current").innerHTML =
+      "Legutolsó url: " + opener.url + opener.current;
+  }
 };
+
+port.onMessage.addListener(function (msg) {
+  if (msg === "refresh") {
+    let opener = JSON.parse(localStorage.getItem("opener"));
+    console.log(opener);
+    document.getElementById("url").value = opener.url;
+    document.getElementById("timeout").value = opener.timeout / 1000;
+    document.getElementById("st").value = opener.start;
+    document.getElementById("end").value = opener.end;
+    document.getElementById("current").innerHTML =
+      "Legutolsó url: " + opener.url + opener.current;
+  }
+});
+
+// window.onblur = function () {
+//   port.postMessage("stop");
+//   port.onMessage.addListener(function (msg) {
+//     console.log("message received: " + msg);
+//   });
+// };
