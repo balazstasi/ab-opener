@@ -4,6 +4,9 @@ body {
   font-family: Arial, sans-serif;
   font-size: 12px;
 }
+.current-link {
+  font-weight: bold;
+}
 .url {
   font-weight: bold;
   width: 250px;

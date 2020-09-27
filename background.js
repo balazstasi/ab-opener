@@ -63,47 +63,6 @@ let limits = [
   "z",
 ];
 
-// let interval = null;
-// let isStarted = false;
-
-// const link = "https://www.google.hu/aa";
-
-// function start_opening_links() {
-//   console.log(link);
-
-//   var good_url_regex = new RegExp(
-//     /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi
-//   );
-
-//   function update_page() {
-//     chrome.tabs.update({
-//       url: link,
-//     });
-//   }
-
-//   // const timeout = $("#timeout").val() * 1000;
-//   timeout = 3000;
-
-//   if (link.match(good_url_regex) && isStarted) {
-//     // document.getElementById("start").innerHTML = "Stop";
-//     interval = setInterval(update_page(), timeout);
-//   } else if (!isStarted) {
-//     // stop_interval();
-//     // document.getElementById("start").innerHTML = "Start";
-//   } else {
-//     alert("Hibás linket adtál meg!");
-//   }
-// }
-
-// chrome.runtime.onMessage.addListener(function (message, sender, reply) {
-//   isStarted = true;
-//   start_opening_links();
-// });
-
-// function stop_interval() {
-//   clearInterval(interval);
-// }
-
 let alphanum = [];
 for (let i = 0; i < limits.length; i++) {
   for (let j = 0; j < limits.length; j++) {
@@ -119,6 +78,7 @@ var completed = false;
 
 function changePage(newUrl) {
   chrome.tabs.query({ currentWindow: true, active: true }, function (tab) {
+    console.log(tab);
     console.log(newUrl);
     chrome.tabs.update(tab.id, {
       url: newUrl,
@@ -127,11 +87,10 @@ function changePage(newUrl) {
 }
 
 function update_page(data) {
-  let newUrl = data.url.slice(0, -2) + alphanum[start];
+  let newUrl = data.url + alphanum[start];
   if (start === end) {
     completed = true;
     changePage(newUrl);
-    return;
   } else {
     changePage(newUrl);
   }
@@ -150,21 +109,27 @@ function update_page(data) {
   }
 }
 
-chrome.extension.onConnect.addListener(function (port) {
+chrome.runtime.onConnect.addListener(function (port) {
   port.onMessage.addListener(function (msg) {
     console.log(msg);
     if (msg !== "stop") {
+      completed = false;
       start = alphanum.findIndex((e) => e === msg.start);
       end = alphanum.findIndex((e) => e === msg.end);
+      console.log(start, end);
+      console.log(completed);
+      console.log(msg);
       (function a() {
-        if (!completed) {
+        if (!completed && msg !== "stop") {
+          console.log(completed);
           update_page(msg);
           repeater = setTimeout(a, msg.timeout);
         } else {
           clearInterval(repeater);
         }
       })();
-    } else {
+    } else if (msg === "stop") {
+      completed = true;
       clearInterval(repeater);
     }
   });

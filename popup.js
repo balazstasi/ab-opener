@@ -1,10 +1,10 @@
-var port = chrome.extension.connect({
-  name: "opener",
-});
-
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("start").addEventListener("click", start);
   document.getElementById("stop").addEventListener("click", stop);
+});
+
+var port = chrome.runtime.connect({
+  name: "opener",
 });
 
 function start(event) {
@@ -53,3 +53,10 @@ function stop(event) {
     console.log("message recieved: " + msg);
   });
 }
+
+window.onblur = function () {
+  port.postMessage("stop");
+  port.onMessage.addListener(function (msg) {
+    console.log("message received: " + msg);
+  });
+};
