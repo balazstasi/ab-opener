@@ -84,7 +84,7 @@ function changePage(newUrl) {
   });
 }
 
-function update_page(data) {
+function update_page(data, port) {
   localStorage.setItem(
     "opener",
     JSON.stringify({
@@ -99,6 +99,7 @@ function update_page(data) {
   if (start === end) {
     completed = true;
     changePage(newUrl);
+    port.sendMessage("refresh");
   } else {
     changePage(newUrl);
   }
@@ -125,8 +126,11 @@ chrome.runtime.onConnect.addListener(function (port) {
       end = alphanum.findIndex((e) => e === msg.end);
       (function a() {
         if (!completed && msg !== "stop") {
-          update_page(msg);
-          port.postMessage("refresh");
+          var views = chrome.extension.getViews({ type: "popup" });
+          if (views.length > 0) {
+            port.postMessage("refresh");
+          }
+          update_page(msg, port);
           repeater = setTimeout(a, msg.timeout);
         } else {
           clearInterval(repeater);

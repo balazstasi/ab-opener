@@ -1,25 +1,11 @@
 body {
-  min-width: 250px;
-  overflow-x: hidden;
-  font-family: Arial, sans-serif;
+  min-width: 350px;
   font-size: 12px;
+  margin: 4px;
 }
-.current-link {
-  font-weight: bold;
-}
-.url {
-  font-weight: bold;
-  width: 250px;
-}
-.limits {
-  font-weight: bold;
-  width: 49%;
-}
-.start,
-.stop {
-  width: 250px;
-}
-.timeout {
-  font-weight: bold;
-  width: 250px;
+
+.btn {
+  width: 48%;
+  padding: 5px;
+  margin: 2px;
 }

@@ -6,26 +6,55 @@
   <script type="text/javascript" src="jquery.js"></script>
   <script type="text/javascript" src="background.js"></script>
   <script type="text/javascript" src="popup.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    crossorigin="anonymous"></script>
   <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 
-<body>
-  <h1>AB Opener</h1>
-  <p id="current-link" class="current-link">Másold be a linket az első inputba, add meg a kezdeti és vég értékeket,
-    aztán START!</p>
+<body class="bg-light">
+
+  <h2 class="text-center">AB Opener</h2>
+  <div class="alert alert-light" role="alert">
+    Másold be a linket az első inputba, add meg a kezdeti és vég értékeket, aztán START!
+  </div>
+  <h1 id="currentLetters" class="currentLetters"></h1>
+  <!-- <h1>Legutolsó <span class="badge badge-secondary" id="currentLetters"></span></h1> -->
   <form>
-    <label for="url" class="hide"></label>
-    <input type="text" class="url" id="url" placeholder="URL" />
-    <br>
-    <b id="current">Legutolsó url:
-    </b>
-    <input type="number" id="timeout" class="timeout" placeholder="Időköz (másodpercben)" size="10" />
-    <input type="text" id="st" class="limits" placeholder="Kezd" size="4" maxlength="2" />
-    <input type="text" id="end" class="limits" placeholder="Befejez" size="4" maxlength="2" />
-    <br><br>
-    <button id="start" class="start">Start</button>
-    <button id="stop" class="stop">Stop</button>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">URL</span>
+      </div>
+      <input type="text" class="form-control" aria-label="url" aria-describedby="url" id="url">
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="kezd">Kezd</span>
+      </div>
+      <input type="text" class="form-control" aria-label="st" aria-describedby="st" id="st" maxlength="2">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="befejez">Befejez</span>
+      </div>
+      <input type="text" class="form-control" aria-label="end" aria-describedby="end" id="end" maxlength="2">
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">Időköz</span>
+      </div>
+      <input type="number" class="form-control" aria-label="timeout" aria-describedby="timeout" id="timeout">
+    </div>
+    <button id="start" class="btn btn-success">Start</button>
+    <button id="stop" class="btn btn-danger">Stop</button>
   </form>
+
 </body>
 
 </html>
