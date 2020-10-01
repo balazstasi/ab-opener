@@ -133,12 +133,12 @@ chrome.runtime.onConnect.addListener(function (port) {
           update_page(msg, port);
           repeater = setTimeout(a, msg.timeout);
         } else {
-          clearInterval(repeater);
+          clearTimeout(repeater);
         }
       })();
     } else if (msg === "stop") {
       completed = true;
-      clearInterval(repeater);
+      clearTimeout(repeater);
     }
   });
 });
